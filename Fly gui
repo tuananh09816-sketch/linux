@@ -1,0 +1,184 @@
+local ScreenGui = Instance.new("ScreenGui")
+local Main = Instance.new("Frame")
+local FlyButton = Instance.new("TextButton")
+local Speed = Instance.new("TextBox")
+local UpButton = Instance.new("TextButton")
+local DownButton = Instance.new("TextButton")
+local Title = Instance.new("TextLabel")
+local Plus = Instance.new("TextButton")
+local Minus = Instance.new("TextButton")
+local Close = Instance.new("TextButton")
+
+ScreenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+
+Main.Name = "Main"
+Main.Parent = ScreenGui
+Main.BackgroundColor3 = Color3.fromRGB(255, 0, 255)
+Main.Position = UDim2.new(0.0131578948, 0, 0.323529422, 0)
+Main.Size = UDim2.new(0, 300, 0, 150)
+Main.Active = true
+Main.Draggable = true
+
+FlyButton.Name = "FlyButton"
+FlyButton.Parent = Main
+FlyButton.BackgroundColor3 = Color3.fromRGB(255, 255, 0)
+FlyButton.Position = UDim2.new(0.733333349, 0, 0.666666687, 0)
+FlyButton.Size = UDim2.new(0, 80, 0, 50)
+FlyButton.Font = Enum.Font.SourceSans
+FlyButton.Text = "fly"
+FlyButton.TextColor3 = Color3.fromRGB(0, 0, 0)
+FlyButton.TextSize = 30.000
+
+Speed.Name = "Speed"
+Speed.Parent = Main
+Speed.BackgroundColor3 = Color3.fromRGB(255, 85, 0)
+Speed.Position = UDim2.new(0.466666669, 0, 0.666666687, 0)
+Speed.Size = UDim2.new(0, 80, 0, 50)
+Speed.Font = Enum.Font.SourceSans
+Speed.Text = "1"
+Speed.TextColor3 = Color3.fromRGB(0, 0, 0)
+Speed.TextSize = 30.000
+
+UpButton.Name = "UpButton"
+UpButton.Parent = Main
+UpButton.BackgroundColor3 = Color3.fromRGB(0, 255, 0)
+UpButton.Position = UDim2.new(0, 0, 0.333333343, 0)
+UpButton.Size = UDim2.new(0, 80, 0, 50)
+UpButton.Font = Enum.Font.SourceSans
+UpButton.Text = "UP"
+UpButton.TextColor3 = Color3.fromRGB(0, 0, 0)
+UpButton.TextSize = 30.000
+
+DownButton.Name = "DownButton"
+DownButton.Parent = Main
+DownButton.BackgroundColor3 = Color3.fromRGB(0, 255, 255)
+DownButton.Position = UDim2.new(0, 0, 0.666666687, 0)
+DownButton.Size = UDim2.new(0, 80, 0, 50)
+DownButton.Font = Enum.Font.SourceSans
+DownButton.Text = "DOWN"
+DownButton.TextColor3 = Color3.fromRGB(0, 0, 0)
+DownButton.TextSize = 30.000
+
+Title.Name = "Title"
+Title.Parent = Main
+Title.BackgroundColor3 = Color3.fromRGB(170, 0, 255)
+Title.Position = UDim2.new(0.266666681, 0, 0, 0)
+Title.Size = UDim2.new(0, 160, 0, 50)
+Title.Font = Enum.Font.SourceSans
+Title.Text = "name_me fly gui v1"
+Title.TextColor3 = Color3.fromRGB(0, 0, 0)
+Title.TextSize = 30.000
+
+Plus.Name = "Plus"
+Plus.Parent = Main
+Plus.BackgroundColor3 = Color3.fromRGB(255, 170, 255)
+Plus.Position = UDim2.new(0.266666681, 0, 0.333333343, 0)
+Plus.Size = UDim2.new(0, 80, 0, 50)
+Plus.Font = Enum.Font.SourceSans
+Plus.Text = "+"
+Plus.TextColor3 = Color3.fromRGB(0, 0, 0)
+Plus.TextSize = 30.000
+
+Minus.Name = "Minus"
+Minus.Parent = Main
+Minus.BackgroundColor3 = Color3.fromRGB(255, 170, 255)
+Minus.Position = UDim2.new(0.266666681, 0, 0.666666687, 0)
+Minus.Size = UDim2.new(0, 80, 0, 50)
+Minus.Font = Enum.Font.SourceSans
+Minus.Text = "-"
+Minus.TextColor3 = Color3.fromRGB(0, 0, 0)
+Minus.TextSize = 30.000
+
+Close.Name = "Close"
+Close.Parent = Main
+Close.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
+Close.Position = UDim2.new(0, 0, 0, 0)
+Close.Size = UDim2.new(0, 80, 0, 50)
+Close.Font = Enum.Font.SourceSans
+Close.Text = "X"
+Close.TextColor3 = Color3.fromRGB(0, 0, 0)
+Close.TextSize = 30.000
+
+local function flyScript()
+	local UIS = game:GetService("UserInputService")
+	local player = game.Players.LocalPlayer
+	local char = player.Character or player.CharacterAdded:Wait()
+	local hrp = char:WaitForChild("HumanoidRootPart")
+	local flying = false
+	local speed = 1
+	local up = false
+	local down = false
+	
+	FlyButton.MouseButton1Click:Connect(function()
+		flying = not flying
+		if flying then
+			FlyButton.Text = "unfly"
+			while flying do
+				task.wait()
+				local moveDirection = Vector3.new()
+				if UIS:IsKeyDown(Enum.KeyCode.W) then
+					moveDirection = moveDirection + (workspace.CurrentCamera.CFrame.LookVector)
+				end
+				if UIS:IsKeyDown(Enum.KeyCode.S) then
+					moveDirection = moveDirection - (workspace.CurrentCamera.CFrame.LookVector)
+				end
+				if UIS:IsKeyDown(Enum.KeyCode.A) then
+					moveDirection = moveDirection - (workspace.CurrentCamera.CFrame.RightVector)
+				end
+				if UIS:IsKeyDown(Enum.KeyCode.D) then
+					moveDirection = moveDirection + (workspace.CurrentCamera.CFrame.RightVector)
+				end
+				if up then
+					moveDirection = moveDirection + Vector3.new(0,1,0)
+				end
+				if down then
+					moveDirection = moveDirection - Vector3.new(0,1,0)
+				end
+			end
+		else
+			FlyButton.Text = "fly"
+		end
+	end)
+	
+	UpButton.MouseButton1Click:Connect(function()
+		up = true
+		task.wait(0.2)
+		up = false
+	end)
+	
+	DownButton.MouseButton1Click:Connect(function()
+		down = true
+		task.wait(0.2)
+		down = false
+	end)
+	
+	Plus.MouseButton1Click:Connect(function()
+		speed = speed + 1
+		Speed.Text = tostring(speed)
+	end)
+	
+	Minus.MouseButton1Click:Connect(function()
+		if speed > 1 then
+			speed = speed - 1
+			Speed.Text = tostring(speed)
+		end
+	end)
+	
+	Speed.FocusLost:Connect(function(enterPressed)
+		if enterPressed then
+			local newSpeed = tonumber(Speed.Text)
+			if newSpeed then
+				speed = newSpeed
+			else
+				Speed.Text = tostring(speed)
+			end
+		end
+	end)
+	
+	Close.MouseButton1Click:Connect(function()
+		ScreenGui:Destroy()
+	end)
+end
+
+flyScript()
